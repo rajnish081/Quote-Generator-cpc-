@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+  <body>
+    <h2>Your Personalized Quote:</h2>
+    <blockquote>{{ quote }}</blockquote>
+
+    <br>
+    <button onclick="copyToClipboard()">Copy</button>
+    <a id="tweetLink" target="_blank">Tweet This</a>
+
+    <script>
+      const quote = "{{ quote }}";
+
+      function copyToClipboard() {
+        navigator.clipboard.writeText(quote);
+        alert("Quote copied!");
+      }
+
+      document.getElementById("tweetLink").href =
+        "https://twitter.com/intent/tweet?text=" + encodeURIComponent(quote);
+    </script>
+  </body>
+</html>
