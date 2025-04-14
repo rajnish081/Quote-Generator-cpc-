@@ -1,16 +1,154 @@
 <!DOCTYPE html>
-<html>
-  <body>
-    <h2>Select Your Interests</h2>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Select Your Interests</title>
+    <style>
+      html, body {
+          height: 100%;
+          margin: 0;
+          padding: 0;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          color: #fff;
+          overflow-x: hidden;
+      }
+  
+      body {
+          background: url('https://images.unsplash.com/photo-1542281286-9e0a16bb7366?auto=format&fit=crop&w=1950&q=80') no-repeat center center fixed;
+          background-size: cover;
+          position: relative;
+          display: flex;
+          flex-direction: column;
+          min-height: 100vh;
+      }
+  
+      body::before {
+          content: '';
+          position: absolute;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
+          background: rgba(20, 20, 50, 0.7); /* dark overlay for readability */
+          backdrop-filter: blur(4px);
+          z-index: -1;
+      }
+  
+      h2 {
+          text-align: center;
+          padding: 60px 20px 20px;
+          font-size: 40px;
+          color: #fff;
+          text-shadow: 2px 2px 8px rgba(0, 0, 0, 0.7);
+      }
+  
+      .interest-container {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: center;
+          gap: 20px;
+          padding: 20px 30px;
+          flex-grow: 1;
+      }
+  
+      .interest {
+          background: rgba(255, 255, 255, 0.1);
+          color: #fff;
+          padding: 16px 36px;
+          border-radius: 14px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          font-size: 18px;
+          font-weight: 500;
+          cursor: pointer;
+          transition: all 0.3s ease;
+          backdrop-filter: blur(2px);
+          box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      }
+  
+      .interest:hover {
+          background: rgba(255, 255, 255, 0.25);
+          transform: translateY(-4px);
+      }
+  
+      .interest.selected {
+          background: linear-gradient(135deg, #8e2de2, #4a00e0);
+          color: #fff;
+          border: 1px solid #fff;
+          transform: translateY(-4px);
+      }
+  
+      button {
+          display: block;
+          margin: 40px auto 60px;
+          padding: 14px 36px;
+          font-size: 18px;
+          font-weight: bold;
+          background: linear-gradient(135deg, #ff6a00, #ee0979);
+          color: #fff;
+          border: none;
+          border-radius: 40px;
+          cursor: pointer;
+          box-shadow: 0 10px 20px rgba(0,0,0,0.3);
+          transition: all 0.3s ease;
+      }
+  
+      button:hover {
+          background: linear-gradient(135deg, #ff8a00, #ff3c8f);
+          transform: scale(1.05);
+      }
+  
+      button:active {
+          background: linear-gradient(135deg, #c2185b, #7b1fa2);
+      }
+  
+      @media (max-width: 600px) {
+          .interest {
+              width: 80%;
+              text-align: center;
+          }
+  
+          h2 {
+              font-size: 32px;
+          }
+      }
+  </style>
+  
+  
+  
+    
+</head>
+<body>
+    <h2>Pick What Inspires You</h2>
     <form action="/generate" method="post">
-      <label><input type="checkbox" name="tags" value="motivation"> Motivation</label><br>
-      <label><input type="checkbox" name="tags" value="sports"> Sports</label><br>
-      <label><input type="checkbox" name="tags" value="programming"> Programming</label><br>
-      <label><input type="checkbox" name="tags" value="music"> Music</label><br>
-      <label><input type="checkbox" name="tags" value="art"> Art</label><br>
-      <label><input type="checkbox" name="tags" value="travel"> Travel</label><br>
-      <br>
-      <button type="submit">Generate Quote</button>
+        <div class="interest-container">
+            <div class="interest" data-value="motivation">Motivation</div>
+            <div class="interest" data-value="sports">Sports</div>
+            <div class="interest" data-value="programming">Programming</div>
+            <div class="interest" data-value="music">Music</div>
+            <div class="interest" data-value="art">Art</div>
+            <div class="interest" data-value="travel">Travel</div>
+        </div>
+        <button type="submit">Generate Quote</button>
     </form>
-  </body>
+
+    <script>
+        const interests = document.querySelectorAll('.interest');
+        interests.forEach(interest => {
+            interest.addEventListener('click', () => {
+                interest.classList.toggle('selected');
+            });
+        });
+
+        const form = document.querySelector('form');
+        form.addEventListener('submit', (e) => {
+            // Gather selected values
+            const selectedInterests = Array.from(document.querySelectorAll('.interest.selected'))
+                                         .map(interest => interest.getAttribute('data-value'));
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'tags';
+            input.value = selectedInterests.join(',');
+            form.appendChild(input);
+        });
+    </script>
+</body>
 </html>
